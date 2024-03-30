@@ -9,7 +9,7 @@ public class Main {
     public static void main(String[] args) {
         JFrame frame = new JFrame("Tetris");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(511, 830); // размеры окна
+        frame.setSize(510, 830); // размеры окна
         frame.setLocationRelativeTo(null); // окно - в центре экрана
 
         Controller controller = new Controller();

@@ -28,6 +28,10 @@ public class GraphicsPanel extends JPanel implements Runnable {
             controller.shiftRight();
             controller.action = "down";
         }
+        else if (Objects.equals(controller.action, "rotate")) {
+            controller.rotate();
+            controller.action = "down";
+        }
         else if (Objects.equals(controller.action, "down")) {
             controller.fallDown();
         }

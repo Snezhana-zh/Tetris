@@ -59,6 +59,8 @@ public class Controller {
     }
     public void rotate() {
         //check
+        //получить координаты и проверить
+
         curShape.rotate();
     }
     public void removeLine(int n) {
@@ -92,15 +94,13 @@ public class Controller {
         return countNonEmptyCell[3] != 0;
     }
     public void fallDown() {
-        // printBoard();
+        //printBoard();
         int[][] coords = curShape.getCoords();
         for (int[] dim : coords) {
             if (!(dim[1] + 1 < board.length && board[dim[1] + 1][dim[0]] != 1)) {
                 addFigure(coords);
                 isStatic = true;
                 int lowerBorder = curShape.getLowerBorder();
-                System.out.println(lowerBorder);
-                System.out.println("count" + countNonEmptyCell[lowerBorder]);
                 if (lineIsOverFilled(lowerBorder)) {
                     removeLine(lowerBorder);
                 }

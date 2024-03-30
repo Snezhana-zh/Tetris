@@ -12,25 +12,29 @@ public class ShapeI extends Shape {
         lowerBorder = coords[0][1];
     }
     @Override
-    public void rotate() { //поменять все знаки у Y, так как она не с макс до 0, а с 0 до макс
+    public void rotate() {
         if (formSide == 1 || formSide == 3) {
             coords[0][0] -= 2;
-            coords[0][1] += 2;
-
+            coords[0][1] -= 2;
             coords[1][0]--;
-            coords[1][1]++;
+            coords[1][1]--;
+
             coords[3][0]++;
-            coords[3][1]--;
+            coords[3][1]++;
+
+            lowerBorder = coords[0][1];
             formChange();
         }
         if (formSide == 2 || formSide == 4) {
             coords[0][0] += 2;
-            coords[0][1] -= 2;
-
+            coords[0][1] += 2;
             coords[1][0]++;
-            coords[1][1]--;
+            coords[1][1]++;
+
             coords[3][0]--;
-            coords[3][1]++;
+            coords[3][1]--;
+
+            lowerBorder = coords[0][1];
             formChange();
         }
     }

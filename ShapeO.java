@@ -11,4 +11,9 @@ public class ShapeO extends Shape {
         coords[3][1] = Constants.Y_MAX - 1;
         lowerBorder = coords[0][1];
     }
+
+    @Override
+    public void rotate() {
+        return;
+    }
 }
