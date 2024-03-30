@@ -1,5 +1,11 @@
+import javax.swing.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 public class Shape {
     protected int[][] coords = new int[4][2];
+    protected int lowerBorder = coords[0][1];
+    public int color;
     protected int formSide = 1;
     protected void formChange() {
         if (formSide == 4) {
@@ -24,9 +30,10 @@ public class Shape {
         for (int[] dim : coords) {
             dim[1]++;
         }
+        lowerBorder++;
     }
-    public int minCoordY() {
-        return coords[0][1];
+    public int getLowerBorder() {
+        return lowerBorder;
     }
     public void rotate() {
         return;
@@ -36,11 +43,11 @@ public class Shape {
         return switch (num) {
             case 0 -> new ShapeJ();
             case 1 -> new ShapeL();
-            case 2 -> new ShapeI();
-            case 3 -> new ShapeS();
-            case 4 -> new ShapeZ();
+            case 2 -> new ShapeO();
+            case 3 -> new ShapeZ();
+            case 4 -> new ShapeI();
             case 5 -> new ShapeT();
-            default -> new ShapeO();
+            default -> new ShapeS();
         };
     }
 }

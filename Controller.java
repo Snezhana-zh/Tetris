@@ -1,12 +1,15 @@
+import java.awt.*;
+import javax.swing.*;
 import java.net.StandardSocketOptions;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Controller {
     private Shape curShape;
     public boolean isStatic = true;
     private final int[] countNonEmptyCell = new int[Constants.MAX_COUNT_CELL_IN_COL];
     private static final int[][] board = new int[Constants.MAX_COUNT_CELL_IN_COL][Constants.MAX_COUNT_CELL_IN_LINE];
-    //сверху 4 клетки поля не отображаются - это пространство для создания фигуры
+    public String action = "down";
     void genericNewShape() {
         curShape = Shape.createShape();
         int[][] coords = curShape.getCoords();
@@ -14,20 +17,32 @@ public class Controller {
             board[dim[1]][dim[0]] = -2;
         }
     }
-    void shiftLeft() {
+    public int[][] getCurCoords() {
+        if (curShape == null) return null;
+        return curShape.getCoords();
+    }
+    public int getCurColor() {
+        return curShape.color;
+    }
+    public int getElem(int c, int r) {
+        return board[c][r];
+    }
+    public void shiftLeft() {
         int[][] coords = curShape.getCoords();
         for (int[] dim : coords) {
-            if (!(dim[0] - 1 < Constants.MAX_COUNT_CELL_IN_LINE && board[dim[1]][dim[0] - 1] != 1)) {
+            if (!(dim[0] - 1 >= 0 && board[dim[1]][dim[0] - 1] != 1)) {
                 return;
             }
         }
         for (int[] dim : coords) {
             board[dim[1]][dim[0]] = 0;
+        }
+        for (int[] dim : coords) {
             board[dim[1]][dim[0] - 1] = -2;
         }
         curShape.moveLeft();
     }
-    void shiftRight() {
+    public void shiftRight() {
         int[][] coords = curShape.getCoords();
         for (int[] dim : coords) {
             if (!(dim[0] + 1 < Constants.MAX_COUNT_CELL_IN_LINE && board[dim[1]][dim[0] + 1] != 1)) {
@@ -36,18 +51,25 @@ public class Controller {
         }
         for (int[] dim : coords) {
             board[dim[1]][dim[0]] = 0;
+        }
+        for (int[] dim : coords) {
             board[dim[1]][dim[0] + 1] = -2;
         }
         curShape.moveRight();
     }
-    void rotate() {
+    public void rotate() {
         //check
         curShape.rotate();
     }
-    void removeLine(int n) {
-        //make
+    public void removeLine(int n) {
+        for (int i = n; i > 0; --i) {
+            for (int j = 0; j < Constants.MAX_COUNT_CELL_IN_LINE; ++j) {
+                board[i][j] = board[i - 1][j];
+            }
+            countNonEmptyCell[i] = countNonEmptyCell[i - 1];
+        }
     }
-    void printBoard() {
+    public void printBoard() {
         for (int i = 0; i < board.length; ++i) {
             for (int j = 0; j < board[i].length; ++j) {
                 System.out.print(board[i][j]);
@@ -57,35 +79,47 @@ public class Controller {
         }
         System.out.print("\n\n");
     }
-    void addFigure(int[][] coords) {
+    public void addFigure(int[][] coords) {
         for (int[] dim : coords) {
             board[dim[1]][dim[0]] = 1;
             countNonEmptyCell[dim[1]]++;
         }
     }
-    boolean finish() {
+    public boolean finish() {
+        if (countNonEmptyCell[3] != 0) {
+            System.out.print("GAME OVER");
+        }
         return countNonEmptyCell[3] != 0;
     }
-    void fallDown() {
+    public void fallDown() {
+        // printBoard();
         int[][] coords = curShape.getCoords();
         for (int[] dim : coords) {
             if (!(dim[1] + 1 < board.length && board[dim[1] + 1][dim[0]] != 1)) {
                 addFigure(coords);
                 isStatic = true;
+                int lowerBorder = curShape.getLowerBorder();
+                System.out.println(lowerBorder);
+                System.out.println("count" + countNonEmptyCell[lowerBorder]);
+                if (lineIsOverFilled(lowerBorder)) {
+                    removeLine(lowerBorder);
+                }
                 return;
             }
         }
         for (int[] dim : coords) {
             board[dim[1]][dim[0]] = 0;
+        }
+        for (int[] dim : coords) {
             board[dim[1] + 1][dim[0]] = -2;
         }
         curShape.moveDown();
-        int minCoordY = curShape.minCoordY();
-        if (lineIsOverFilled(minCoordY)) {
-            removeLine(minCoordY);
-        }
     }
-    boolean lineIsOverFilled(int col) {
+    public int getLowerBorder() {
+        if (curShape == null) return -1;
+        return curShape.getLowerBorder() * 50;
+    }
+    public boolean lineIsOverFilled(int col) {
         return countNonEmptyCell[col] == Constants.MAX_COUNT_CELL_IN_LINE;
     }
 }
