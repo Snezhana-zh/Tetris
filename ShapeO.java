@@ -13,7 +13,7 @@ public class ShapeO extends Shape {
     }
 
     @Override
-    public void rotate() {
+    public void tryRotate() {
         return;
     }
 }

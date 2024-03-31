@@ -12,28 +12,36 @@ public class ShapeZ extends Shape {
         lowerBorder = coords[2][1];
     }
     @Override
-    public void rotate() {
+    public void tryRotate() {
         if (formSide == 1 || formSide == 3) {
-            coords[0][1] -= 2;
+            if (isfreeCell(coords[0][0], coords[0][1] + 2) &&
+                    isfreeCell(coords[1][0] - 1, coords[1][1] + 1) &&
+                    isfreeCell(coords[3][0] - 1, coords[3][1] - 1)) {
+                coords[0][1] += 2;
 
-            coords[1][0]--;
-            coords[1][1]--;
-            coords[3][0]--;
-            coords[3][1]++;
+                coords[1][0]--;
+                coords[1][1]++;
+                coords[3][0]--;
+                coords[3][1]--;
 
-            lowerBorder = coords[3][1];
-            formChange();
+                lowerBorder = coords[3][1];
+                formChange();
+            }
         }
-        if (formSide == 2 || formSide == 4) {
-            coords[0][1] += 2;
+        else if (formSide == 2 || formSide == 4) {
+            if (isfreeCell(coords[0][0], coords[0][1] - 2) &&
+                    isfreeCell(coords[1][0] + 1, coords[1][1] - 1) &&
+                    isfreeCell(coords[3][0] + 1, coords[3][1] + 1)) {
+                coords[0][1] -= 2;
 
-            coords[1][0]++;
-            coords[1][1]++;
-            coords[3][0]++;
-            coords[3][1]--;
+                coords[1][0]++;
+                coords[1][1]--;
+                coords[3][0]++;
+                coords[3][1]++;
 
-            lowerBorder = coords[2][1];
-            formChange();
+                lowerBorder = coords[2][1];
+                formChange();
+            }
         }
     }
 }
